@@ -5,7 +5,7 @@ import User from "../models/UserModel.js";
 const getPosts = async(req, res) => {
 
     try {
-        const posts = await Post.find();
+        const posts = await Post.find().sort({ createdAt: "desc" });
         res.status(200).json({ posts });
     } catch (err) {
         res.status(500).json({ 'error': err.message })
@@ -19,8 +19,8 @@ const getUserPosts = async(req, res) => {
     const user = await User.findById(req.user._id);
 
     try {
-        const userPosts = await Post.find({ user: user._id });
-        res.status(200).json({ userPosts });
+        const userPosts = await Post.find({ user: user._id }).sort({ createdAt: "desc" });;
+        res.status(200).json({ userPosts, email: user.email });
     } catch (err) {
         res.status(500).json({ 'error': err.message })
     }
